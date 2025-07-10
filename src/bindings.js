@@ -1,18 +1,18 @@
 import { getProperty } from "dot-prop";
 import { bind } from "./bind";
-import { walk } from "./utils";
+import { walk, nextTick } from "./utils";
 
 export function updateBindings(controller, callback) {
   const bindings = getBindings(controller);
   bindings.forEach((binding) => {
-    const { node, name, path } = binding;
+    let { node, name, path, negated } = binding;
     if (!controller.element.contains(node)) {
-      // remove any bindings for elements that have been removed
+      // clean up any bindings for elements that have been removed from the DOM
       bindings.delete(binding);
     } else {
       // Update bindings for the node
-      bind(node, name, getProperty(controller, path));
-      // Remove the cloaking attribute if present
+      const value = getProperty(controller, path);
+      bind(node, name, negated ? !value : value);
       node.removeAttribute("data-cloak");
     }
   });
@@ -37,9 +37,14 @@ export function registerBindingsForNode(controller, rootNode) {
     Array.from(node.attributes)
       .filter(({ name }) => name.startsWith(attrPrefix))
       .forEach((attr) => {
-        const path = attr.value;
+        let negated = false;
+        let path = attr.value;
+        if (path.startsWith("!")) {
+          negated = true;
+          path = path.replace("!", "");
+        }
         const name = attr.name === attrPrefix ? "all" : attr.name.replace(`${attrPrefix}-`, "");
-        registerBinding(controller, node, name, path);
+        registerBinding(controller, node, name, path, negated);
         node.removeAttribute(attr.name);
       });
   });
@@ -50,8 +55,8 @@ export function refreshBindings(controller) {
   registerBindings(controller);
 }
 
-export function registerBinding(controller, node, name, path) {
-  getBindings(controller).add({ node, name, path });
+export function registerBinding(controller, node, name, path, negated) {
+  getBindings(controller).add({ node, name, path, negated });
 }
 
 export function deregisterBindingsForNode(controller, node) {
