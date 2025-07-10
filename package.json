@@ -1,0 +1,33 @@
+{
+  "name": "stimulus-value-bindings",
+  "version": "0.0.1",
+  "description": "One-way reactive DOM bindings for Stimulus JS",
+  "author": "Mark Perkins",
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/allmarkedup/stimulus-value-bindings/issues"
+  },
+  "homepage": "https://github.com/allmarkedup/stimulus-value-bindings#readme",
+  "repository": {
+    "type": "git",
+    "url": "git+ssh://git@github.com/allmarkedup/stimulus-value-bindings.git"
+  },
+  "keywords": [
+    "stimulus-js",
+    "reactive",
+    "bindings"
+  ],
+  "source": "src/index.js",
+  "main": "dist/main.js",
+  "type": "module",
+  "scripts": {
+    "watch": "parcel watch",
+    "build": "parcel build"
+  },
+  "dependencies": {
+    "dot-prop": "^9.0.0"
+  },
+  "devDependencies": {
+    "parcel": "^2.15.2"
+  }
+}
