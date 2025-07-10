@@ -1,5 +1,4 @@
 import { queueJob } from "./scheduler";
-import { debounce } from "./utils";
 import { observeValues, observeTree } from "./mutation-observers";
 import {
   registerBindings,
@@ -21,7 +20,7 @@ export const useValueBindings = (controller) => {
     initialUpdateHasRun = true;
   };
 
-  const scheduleUpdate = debounce(() => queueJob(updateBindingsAndNotify));
+  const scheduleUpdate = () => queueJob(updateBindingsAndNotify);
 
   const valuesObserver = observeValues(controller, scheduleUpdate);
   const treeObserver = observeTree(controller, (addedNodes, removedNodes) => {
