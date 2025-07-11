@@ -105,7 +105,7 @@ data-[identifier]-bind-[bindingType]="[propertyName]"
 
 ### Binding types
 
-The `bindingType` part of the binding data attribute format (`data-[identifier]-bind-[bindingType]="exampleValue"`) can be one of the following:
+The following types of bindings are available:
 
 #### `text`
 
