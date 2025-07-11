@@ -13,6 +13,8 @@ It allows you to declaratively bind element attributes and content to [Stimulus 
 
 ## Simple counter example
 
+▶️ [View this example running in JSBin](https://jsbin.com/hitotizesi/2/edit?html,output)
+
 ```js
 // counter-controller.js
 import { Controller } from "@hotwired/stimulus";
