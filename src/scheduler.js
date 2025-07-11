@@ -1,6 +1,7 @@
 let flushPending = false;
 let flushing = false;
 let queue = [];
+let lastFlushedIndex = -1;
 
 export function queueJob(job) {
   if (!queue.includes(job)) queue.push(job);

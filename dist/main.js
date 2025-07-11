@@ -46,6 +46,7 @@ function $ab15207bcd454330$export$61fc7d43ac8f84b0(func, wait) {
 let $c9c38abdedb1801d$var$flushPending = false;
 let $c9c38abdedb1801d$var$flushing = false;
 let $c9c38abdedb1801d$var$queue = [];
+let $c9c38abdedb1801d$var$lastFlushedIndex = -1;
 function $c9c38abdedb1801d$export$fba1a0a20887772f(job) {
     if (!$c9c38abdedb1801d$var$queue.includes(job)) $c9c38abdedb1801d$var$queue.push(job);
     $c9c38abdedb1801d$var$queueFlush();
@@ -61,10 +62,10 @@ function $c9c38abdedb1801d$export$8ca066e62735a16c() {
     $c9c38abdedb1801d$var$flushing = true;
     for(let i = 0; i < $c9c38abdedb1801d$var$queue.length; i++){
         $c9c38abdedb1801d$var$queue[i]();
-        lastFlushedIndex = i;
+        $c9c38abdedb1801d$var$lastFlushedIndex = i;
     }
     $c9c38abdedb1801d$var$queue.length = 0;
-    lastFlushedIndex = -1;
+    $c9c38abdedb1801d$var$lastFlushedIndex = -1;
     $c9c38abdedb1801d$var$flushing = false;
 }
 
