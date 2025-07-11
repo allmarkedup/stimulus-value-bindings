@@ -1,35 +1,33 @@
-import {getProperty as $5OpyM$getProperty} from "dot-prop";
-
-let $d4ae3234addc34de$var$stack = [];
-function $d4ae3234addc34de$export$bdd553fddd433dcb(callback = ()=>{}) {
+let $1b65c17c68ad2def$var$stack = [];
+function $1b65c17c68ad2def$export$bdd553fddd433dcb(callback = ()=>{}) {
     queueMicrotask(()=>{
-        setTimeout(()=>$d4ae3234addc34de$var$releaseNextTicks());
+        setTimeout(()=>$1b65c17c68ad2def$var$releaseNextTicks());
     });
     return new Promise((res)=>{
-        $d4ae3234addc34de$var$stack.push(()=>{
+        $1b65c17c68ad2def$var$stack.push(()=>{
             callback();
             res();
         });
     });
 }
-function $d4ae3234addc34de$var$releaseNextTicks() {
-    while($d4ae3234addc34de$var$stack.length)$d4ae3234addc34de$var$stack.shift()();
+function $1b65c17c68ad2def$var$releaseNextTicks() {
+    while($1b65c17c68ad2def$var$stack.length)$1b65c17c68ad2def$var$stack.shift()();
 }
 
 
-function $95c85b5463da005b$export$588732934346abbf(el, callback) {
+function $f2c6b253ca7f90a5$export$588732934346abbf(el, callback) {
     let skip = false;
     callback(el, ()=>skip = true);
     if (skip) return;
     let node = el.firstElementChild;
     while(node){
-        $95c85b5463da005b$export$588732934346abbf(node, callback, false);
+        $f2c6b253ca7f90a5$export$588732934346abbf(node, callback, false);
         node = node.nextElementSibling;
     }
 }
 
 
-function $6171ecfbc5185ed7$export$61fc7d43ac8f84b0(func, wait) {
+function $ab15207bcd454330$export$61fc7d43ac8f84b0(func, wait) {
     var timeout;
     return function() {
         const context = this, args = arguments;
@@ -45,33 +43,33 @@ function $6171ecfbc5185ed7$export$61fc7d43ac8f84b0(func, wait) {
 
 
 
-let $eae25d6e66596517$var$flushPending = false;
-let $eae25d6e66596517$var$flushing = false;
-let $eae25d6e66596517$var$queue = [];
-function $eae25d6e66596517$export$fba1a0a20887772f(job) {
-    if (!$eae25d6e66596517$var$queue.includes(job)) $eae25d6e66596517$var$queue.push(job);
-    $eae25d6e66596517$var$queueFlush();
+let $c9c38abdedb1801d$var$flushPending = false;
+let $c9c38abdedb1801d$var$flushing = false;
+let $c9c38abdedb1801d$var$queue = [];
+function $c9c38abdedb1801d$export$fba1a0a20887772f(job) {
+    if (!$c9c38abdedb1801d$var$queue.includes(job)) $c9c38abdedb1801d$var$queue.push(job);
+    $c9c38abdedb1801d$var$queueFlush();
 }
-function $eae25d6e66596517$var$queueFlush() {
-    if (!$eae25d6e66596517$var$flushing && !$eae25d6e66596517$var$flushPending) {
-        $eae25d6e66596517$var$flushPending = true;
-        queueMicrotask($eae25d6e66596517$export$8ca066e62735a16c);
+function $c9c38abdedb1801d$var$queueFlush() {
+    if (!$c9c38abdedb1801d$var$flushing && !$c9c38abdedb1801d$var$flushPending) {
+        $c9c38abdedb1801d$var$flushPending = true;
+        queueMicrotask($c9c38abdedb1801d$export$8ca066e62735a16c);
     }
 }
-function $eae25d6e66596517$export$8ca066e62735a16c() {
-    $eae25d6e66596517$var$flushPending = false;
-    $eae25d6e66596517$var$flushing = true;
-    for(let i = 0; i < $eae25d6e66596517$var$queue.length; i++){
-        $eae25d6e66596517$var$queue[i]();
+function $c9c38abdedb1801d$export$8ca066e62735a16c() {
+    $c9c38abdedb1801d$var$flushPending = false;
+    $c9c38abdedb1801d$var$flushing = true;
+    for(let i = 0; i < $c9c38abdedb1801d$var$queue.length; i++){
+        $c9c38abdedb1801d$var$queue[i]();
         lastFlushedIndex = i;
     }
-    $eae25d6e66596517$var$queue.length = 0;
+    $c9c38abdedb1801d$var$queue.length = 0;
     lastFlushedIndex = -1;
-    $eae25d6e66596517$var$flushing = false;
+    $c9c38abdedb1801d$var$flushing = false;
 }
 
 
-function $6f9c88a3e0762a2c$export$7e6f8094deb93e61(controller, callback) {
+function $2f1bc38ffa799d8a$export$7e6f8094deb93e61(controller, callback) {
     const values = controller.constructor.values || {};
     let observing = false;
     const changeCallbacks = Object.keys(values).map((key)=>{
@@ -98,7 +96,7 @@ function $6f9c88a3e0762a2c$export$7e6f8094deb93e61(controller, callback) {
 }
 
 
-function $dcb8aed17f7a9f14$export$1530b8c0a3516a7d(controller, callback) {
+function $27fd7c4a96ba66c2$export$1530b8c0a3516a7d(controller, callback) {
     let observing = false;
     const { element: element } = controller;
     const filterElementNodes = (nodes)=>Array.from(nodes).filter((node)=>node.nodeType !== 3);
@@ -143,60 +141,255 @@ function $dcb8aed17f7a9f14$export$1530b8c0a3516a7d(controller, callback) {
 
 
 
+const $58aadf541c12f919$var$isObject = (value)=>{
+    const type = typeof value;
+    return value !== null && (type === 'object' || type === 'function');
+};
+const $58aadf541c12f919$var$isEmptyObject = (value)=>$58aadf541c12f919$var$isObject(value) && Object.keys(value).length === 0;
+const $58aadf541c12f919$var$disallowedKeys = new Set([
+    '__proto__',
+    'prototype',
+    'constructor'
+]);
+const $58aadf541c12f919$var$digits = new Set('0123456789');
+function $58aadf541c12f919$var$getPathSegments(path) {
+    const parts = [];
+    let currentSegment = '';
+    let currentPart = 'start';
+    let isIgnoring = false;
+    for (const character of path)switch(character){
+        case '\\':
+            if (currentPart === 'index') throw new Error('Invalid character in an index');
+            if (currentPart === 'indexEnd') throw new Error('Invalid character after an index');
+            if (isIgnoring) currentSegment += character;
+            currentPart = 'property';
+            isIgnoring = !isIgnoring;
+            break;
+        case '.':
+            if (currentPart === 'index') throw new Error('Invalid character in an index');
+            if (currentPart === 'indexEnd') {
+                currentPart = 'property';
+                break;
+            }
+            if (isIgnoring) {
+                isIgnoring = false;
+                currentSegment += character;
+                break;
+            }
+            if ($58aadf541c12f919$var$disallowedKeys.has(currentSegment)) return [];
+            parts.push(currentSegment);
+            currentSegment = '';
+            currentPart = 'property';
+            break;
+        case '[':
+            if (currentPart === 'index') throw new Error('Invalid character in an index');
+            if (currentPart === 'indexEnd') {
+                currentPart = 'index';
+                break;
+            }
+            if (isIgnoring) {
+                isIgnoring = false;
+                currentSegment += character;
+                break;
+            }
+            if (currentPart === 'property') {
+                if ($58aadf541c12f919$var$disallowedKeys.has(currentSegment)) return [];
+                parts.push(currentSegment);
+                currentSegment = '';
+            }
+            currentPart = 'index';
+            break;
+        case ']':
+            if (currentPart === 'index') {
+                parts.push(Number.parseInt(currentSegment, 10));
+                currentSegment = '';
+                currentPart = 'indexEnd';
+                break;
+            }
+            if (currentPart === 'indexEnd') throw new Error('Invalid character after an index');
+        default:
+            if (currentPart === 'index' && !$58aadf541c12f919$var$digits.has(character)) throw new Error('Invalid character in an index');
+            if (currentPart === 'indexEnd') throw new Error('Invalid character after an index');
+            if (currentPart === 'start') currentPart = 'property';
+            if (isIgnoring) {
+                isIgnoring = false;
+                currentSegment += '\\';
+            }
+            currentSegment += character;
+    }
+    if (isIgnoring) currentSegment += '\\';
+    switch(currentPart){
+        case 'property':
+            if ($58aadf541c12f919$var$disallowedKeys.has(currentSegment)) return [];
+            parts.push(currentSegment);
+            break;
+        case 'index':
+            throw new Error('Index was not closed');
+        case 'start':
+            parts.push('');
+            break;
+    }
+    return parts;
+}
+function $58aadf541c12f919$var$isStringIndex(object, key) {
+    if (typeof key !== 'number' && Array.isArray(object)) {
+        const index = Number.parseInt(key, 10);
+        return Number.isInteger(index) && object[index] === object[key];
+    }
+    return false;
+}
+function $58aadf541c12f919$var$assertNotStringIndex(object, key) {
+    if ($58aadf541c12f919$var$isStringIndex(object, key)) throw new Error('Cannot use string index');
+}
+function $58aadf541c12f919$export$63ef76b19cf4a753(object, path, value) {
+    if (!$58aadf541c12f919$var$isObject(object) || typeof path !== 'string') return value === undefined ? object : value;
+    const pathArray = $58aadf541c12f919$var$getPathSegments(path);
+    if (pathArray.length === 0) return value;
+    for(let index = 0; index < pathArray.length; index++){
+        const key = pathArray[index];
+        if ($58aadf541c12f919$var$isStringIndex(object, key)) object = index === pathArray.length - 1 ? undefined : null;
+        else object = object[key];
+        if (object === undefined || object === null) {
+            // `object` is either `undefined` or `null` so we want to stop the loop, and
+            // if this is not the last bit of the path, and
+            // if it didn't return `undefined`
+            // it would return `null` if `object` is `null`
+            // but we want `get({foo: null}, 'foo.bar')` to equal `undefined`, or the supplied value, not `null`
+            if (index !== pathArray.length - 1) return value;
+            break;
+        }
+    }
+    return object === undefined ? value : object;
+}
+function $58aadf541c12f919$export$a41c68a4eb5ff164(object, path, value) {
+    if (!$58aadf541c12f919$var$isObject(object) || typeof path !== 'string') return object;
+    const root = object;
+    const pathArray = $58aadf541c12f919$var$getPathSegments(path);
+    for(let index = 0; index < pathArray.length; index++){
+        const key = pathArray[index];
+        $58aadf541c12f919$var$assertNotStringIndex(object, key);
+        if (index === pathArray.length - 1) object[key] = value;
+        else if (!$58aadf541c12f919$var$isObject(object[key])) object[key] = typeof pathArray[index + 1] === 'number' ? [] : {};
+        object = object[key];
+    }
+    return root;
+}
+function $58aadf541c12f919$export$2fae62fb628b9c68(object, path) {
+    if (!$58aadf541c12f919$var$isObject(object) || typeof path !== 'string') return false;
+    const pathArray = $58aadf541c12f919$var$getPathSegments(path);
+    for(let index = 0; index < pathArray.length; index++){
+        const key = pathArray[index];
+        $58aadf541c12f919$var$assertNotStringIndex(object, key);
+        if (index === pathArray.length - 1) {
+            delete object[key];
+            return true;
+        }
+        object = object[key];
+        if (!$58aadf541c12f919$var$isObject(object)) return false;
+    }
+}
+function $58aadf541c12f919$export$bf9617eaf5d2451(object, path) {
+    if (!$58aadf541c12f919$var$isObject(object) || typeof path !== 'string') return false;
+    const pathArray = $58aadf541c12f919$var$getPathSegments(path);
+    if (pathArray.length === 0) return false;
+    for (const key of pathArray){
+        if (!$58aadf541c12f919$var$isObject(object) || !(key in object) || $58aadf541c12f919$var$isStringIndex(object, key)) return false;
+        object = object[key];
+    }
+    return true;
+}
+function $58aadf541c12f919$export$b36556ce4a09dde6(path) {
+    if (typeof path !== 'string') throw new TypeError('Expected a string');
+    return path.replaceAll(/[\\.[]/g, '\\$&');
+}
+// The keys returned by Object.entries() for arrays are strings
+function $58aadf541c12f919$var$entries(value) {
+    const result = Object.entries(value);
+    if (Array.isArray(value)) return result.map(([key, value])=>[
+            Number(key),
+            value
+        ]);
+    return result;
+}
+function $58aadf541c12f919$var$stringifyPath(pathSegments) {
+    let result = '';
+    for (let [index, segment] of $58aadf541c12f919$var$entries(pathSegments))if (typeof segment === 'number') result += `[${segment}]`;
+    else {
+        segment = $58aadf541c12f919$export$b36556ce4a09dde6(segment);
+        result += index === 0 ? segment : `.${segment}`;
+    }
+    return result;
+}
+function* $58aadf541c12f919$var$deepKeysIterator(object, currentPath = []) {
+    if (!$58aadf541c12f919$var$isObject(object) || $58aadf541c12f919$var$isEmptyObject(object)) {
+        if (currentPath.length > 0) yield $58aadf541c12f919$var$stringifyPath(currentPath);
+        return;
+    }
+    for (const [key, value] of $58aadf541c12f919$var$entries(object))yield* $58aadf541c12f919$var$deepKeysIterator(value, [
+        ...currentPath,
+        key
+    ]);
+}
+function $58aadf541c12f919$export$13f626a1d0c23ea1(object) {
+    return [
+        ...$58aadf541c12f919$var$deepKeysIterator(object)
+    ];
+}
 
 
-function $e244f1b8e144127e$export$2385a24977818dd0(element, name, value) {
+
+function $e079e892a7dd69f3$export$2385a24977818dd0(element, name, value) {
     switch(name){
         case "all":
-            $e244f1b8e144127e$var$bindAll(element, value);
+            $e079e892a7dd69f3$var$bindAll(element, value);
             break;
         case "text":
-            $e244f1b8e144127e$var$bindText(element, value);
+            $e079e892a7dd69f3$var$bindText(element, value);
             break;
         case "html":
-            $e244f1b8e144127e$var$bindHTML(element, value);
+            $e079e892a7dd69f3$var$bindHTML(element, value);
             break;
         case "checked":
         case "selected":
-            $e244f1b8e144127e$var$bindAttributeAndProperty(element, name, value);
+            $e079e892a7dd69f3$var$bindAttributeAndProperty(element, name, value);
             break;
         default:
-            $e244f1b8e144127e$var$bindAttribute(element, name, value);
+            $e079e892a7dd69f3$var$bindAttribute(element, name, value);
             break;
     }
 }
-function $e244f1b8e144127e$var$bindText(element, value) {
+function $e079e892a7dd69f3$var$bindText(element, value) {
     element.innerText = value;
 }
-function $e244f1b8e144127e$var$bindHTML(element, value) {
+function $e079e892a7dd69f3$var$bindHTML(element, value) {
     element.innerHTML = value;
 }
-function $e244f1b8e144127e$var$bindAttribute(el, name, value) {
+function $e079e892a7dd69f3$var$bindAttribute(el, name, value) {
     if ([
         null,
         undefined,
         false
-    ].includes(value) && $e244f1b8e144127e$var$attributeShouldntBePreservedIfFalsy(name)) el.removeAttribute(name);
+    ].includes(value) && $e079e892a7dd69f3$var$attributeShouldntBePreservedIfFalsy(name)) el.removeAttribute(name);
     else {
-        if ($e244f1b8e144127e$var$isBooleanAttr(name)) value = name;
-        $e244f1b8e144127e$var$setIfChanged(el, name, value);
+        if ($e079e892a7dd69f3$var$isBooleanAttr(name)) value = name;
+        $e079e892a7dd69f3$var$setIfChanged(el, name, value);
     }
 }
-function $e244f1b8e144127e$var$bindAll(element, obj) {
-    Object.keys(obj).forEach((name)=>$e244f1b8e144127e$export$2385a24977818dd0(element, name, (0, $5OpyM$getProperty)(obj, name)));
+function $e079e892a7dd69f3$var$bindAll(element, obj) {
+    Object.keys(obj).forEach((name)=>$e079e892a7dd69f3$export$2385a24977818dd0(element, name, (0, $58aadf541c12f919$export$63ef76b19cf4a753)(obj, name)));
 }
-function $e244f1b8e144127e$var$bindAttributeAndProperty(el, name, value) {
-    $e244f1b8e144127e$var$bindAttribute(el, name, value);
-    $e244f1b8e144127e$var$setPropertyIfChanged(el, name, value);
+function $e079e892a7dd69f3$var$bindAttributeAndProperty(el, name, value) {
+    $e079e892a7dd69f3$var$bindAttribute(el, name, value);
+    $e079e892a7dd69f3$var$setPropertyIfChanged(el, name, value);
 }
-function $e244f1b8e144127e$var$setIfChanged(el, attrName, value) {
+function $e079e892a7dd69f3$var$setIfChanged(el, attrName, value) {
     if (el.getAttribute(attrName) != value) el.setAttribute(attrName, value);
 }
-function $e244f1b8e144127e$var$setPropertyIfChanged(el, propName, value) {
+function $e079e892a7dd69f3$var$setPropertyIfChanged(el, propName, value) {
     if (el[propName] !== value) el[propName] = value;
 }
 // As per HTML spec table https://html.spec.whatwg.org/multipage/indices.html#attributes-3:boolean-attribute
-const $e244f1b8e144127e$var$booleanAttributes = new Set([
+const $e079e892a7dd69f3$var$booleanAttributes = new Set([
     "allowfullscreen",
     "async",
     "autofocus",
@@ -222,10 +415,10 @@ const $e244f1b8e144127e$var$booleanAttributes = new Set([
     "reversed",
     "selected"
 ]);
-function $e244f1b8e144127e$var$isBooleanAttr(attrName) {
-    return $e244f1b8e144127e$var$booleanAttributes.has(attrName);
+function $e079e892a7dd69f3$var$isBooleanAttr(attrName) {
+    return $e079e892a7dd69f3$var$booleanAttributes.has(attrName);
 }
-function $e244f1b8e144127e$var$attributeShouldntBePreservedIfFalsy(name) {
+function $e079e892a7dd69f3$var$attributeShouldntBePreservedIfFalsy(name) {
     return ![
         "aria-pressed",
         "aria-checked",
@@ -236,31 +429,31 @@ function $e244f1b8e144127e$var$attributeShouldntBePreservedIfFalsy(name) {
 
 
 
-function $81fb34e72745e1de$export$816b23a2bc3d44ec(controller, callback) {
-    const bindings = $81fb34e72745e1de$export$afc479602647d2a4(controller);
+function $b06a48268576e1c4$export$816b23a2bc3d44ec(controller, callback) {
+    const bindings = $b06a48268576e1c4$export$afc479602647d2a4(controller);
     bindings.forEach((binding)=>{
         let { node: node, name: name, path: path, negated: negated } = binding;
         if (!controller.element.contains(node)) // clean up any bindings for elements that have been removed from the DOM
         bindings.delete(binding);
         else {
             // Update bindings for the node
-            const value = (0, $5OpyM$getProperty)(controller, path);
-            (0, $e244f1b8e144127e$export$2385a24977818dd0)(node, name, negated ? !value : value);
+            const value = (0, $58aadf541c12f919$export$63ef76b19cf4a753)(controller, path);
+            (0, $e079e892a7dd69f3$export$2385a24977818dd0)(node, name, negated ? !value : value);
             node.removeAttribute("data-cloak");
         }
     });
     if (typeof callback === "function") // Run the callback once all bindings have been updated.
     callback();
 }
-function $81fb34e72745e1de$export$2696433f89f63f2f(controller) {
-    if (!$81fb34e72745e1de$var$bindingsAreInitialized(controller)) {
+function $b06a48268576e1c4$export$2696433f89f63f2f(controller) {
+    if (!$b06a48268576e1c4$var$bindingsAreInitialized(controller)) {
         controller.__value_bindings = new Set();
-        $81fb34e72745e1de$export$9d08f9cef6f4df8b(controller, controller.element);
+        $b06a48268576e1c4$export$9d08f9cef6f4df8b(controller, controller.element);
     }
 }
-function $81fb34e72745e1de$export$9d08f9cef6f4df8b(controller, rootNode) {
+function $b06a48268576e1c4$export$9d08f9cef6f4df8b(controller, rootNode) {
     const attrPrefix = `data-${controller.identifier}-bind`;
-    (0, $95c85b5463da005b$export$588732934346abbf)(rootNode, (node)=>{
+    (0, $f2c6b253ca7f90a5$export$588732934346abbf)(rootNode, (node)=>{
         Array.from(node.attributes).filter(({ name: name })=>name.startsWith(attrPrefix)).forEach((attr)=>{
             let negated = false;
             let path = attr.value;
@@ -269,57 +462,57 @@ function $81fb34e72745e1de$export$9d08f9cef6f4df8b(controller, rootNode) {
                 path = path.replace("!", "");
             }
             const name = attr.name === attrPrefix ? "all" : attr.name.replace(`${attrPrefix}-`, "");
-            $81fb34e72745e1de$export$794005cd6f1aea3(controller, node, name, path, negated);
+            $b06a48268576e1c4$export$794005cd6f1aea3(controller, node, name, path, negated);
             node.removeAttribute(attr.name);
         });
     });
 }
-function $81fb34e72745e1de$export$317a120ffaa434e1(controller) {
-    $81fb34e72745e1de$export$b7c6f809f4c7570b(controller);
-    $81fb34e72745e1de$export$2696433f89f63f2f(controller);
+function $b06a48268576e1c4$export$317a120ffaa434e1(controller) {
+    $b06a48268576e1c4$export$b7c6f809f4c7570b(controller);
+    $b06a48268576e1c4$export$2696433f89f63f2f(controller);
 }
-function $81fb34e72745e1de$export$794005cd6f1aea3(controller, node, name, path, negated) {
-    $81fb34e72745e1de$export$afc479602647d2a4(controller).add({
+function $b06a48268576e1c4$export$794005cd6f1aea3(controller, node, name, path, negated) {
+    $b06a48268576e1c4$export$afc479602647d2a4(controller).add({
         node: node,
         name: name,
         path: path,
         negated: negated
     });
 }
-function $81fb34e72745e1de$export$3eff236524896414(controller, node) {
-    const bindings = $81fb34e72745e1de$export$afc479602647d2a4(controller);
+function $b06a48268576e1c4$export$3eff236524896414(controller, node) {
+    const bindings = $b06a48268576e1c4$export$afc479602647d2a4(controller);
     bindings.forEach((binding)=>{
         if (binding.node === node) bindings.delete(binding);
     });
 }
-function $81fb34e72745e1de$export$b7c6f809f4c7570b(controller) {
+function $b06a48268576e1c4$export$b7c6f809f4c7570b(controller) {
     controller.__value_bindings?.clear();
     controller.__value_bindings = new Set();
 }
-function $81fb34e72745e1de$export$afc479602647d2a4(controller) {
+function $b06a48268576e1c4$export$afc479602647d2a4(controller) {
     return controller.__value_bindings;
 }
-function $81fb34e72745e1de$var$bindingsAreInitialized(controller) {
+function $b06a48268576e1c4$var$bindingsAreInitialized(controller) {
     return controller.__value_bindings instanceof Set;
 }
 
 
-const $591b1c2388287e20$export$d8d8c48ace6d5d1b = (controller)=>{
+const $74d2fd5bf8805eea$export$d8d8c48ace6d5d1b = (controller)=>{
     let initialUpdateHasRun = false;
     const updateBindingsAndNotify = ()=>{
-        (0, $81fb34e72745e1de$export$816b23a2bc3d44ec)(controller, ()=>{
+        (0, $b06a48268576e1c4$export$816b23a2bc3d44ec)(controller, ()=>{
             if (typeof controller.bindingsUpdated === "function") controller.bindingsUpdated(!initialUpdateHasRun);
         });
         initialUpdateHasRun = true;
     };
-    const scheduleUpdate = ()=>(0, $eae25d6e66596517$export$fba1a0a20887772f)(updateBindingsAndNotify);
-    const valuesObserver = (0, $6f9c88a3e0762a2c$export$7e6f8094deb93e61)(controller, scheduleUpdate);
-    const treeObserver = (0, $dcb8aed17f7a9f14$export$1530b8c0a3516a7d)(controller, (addedNodes, removedNodes)=>{
-        removedNodes.forEach((node)=>(0, $81fb34e72745e1de$export$3eff236524896414)(controller, node));
-        addedNodes.forEach((node)=>(0, $81fb34e72745e1de$export$9d08f9cef6f4df8b)(controller, node));
+    const scheduleUpdate = ()=>(0, $c9c38abdedb1801d$export$fba1a0a20887772f)(updateBindingsAndNotify);
+    const valuesObserver = (0, $2f1bc38ffa799d8a$export$7e6f8094deb93e61)(controller, scheduleUpdate);
+    const treeObserver = (0, $27fd7c4a96ba66c2$export$1530b8c0a3516a7d)(controller, (addedNodes, removedNodes)=>{
+        removedNodes.forEach((node)=>(0, $b06a48268576e1c4$export$3eff236524896414)(controller, node));
+        addedNodes.forEach((node)=>(0, $b06a48268576e1c4$export$9d08f9cef6f4df8b)(controller, node));
         treeObserver.runWithoutObservation(updateBindingsAndNotify);
     });
-    (0, $81fb34e72745e1de$export$2696433f89f63f2f)(controller);
+    (0, $b06a48268576e1c4$export$2696433f89f63f2f)(controller);
     scheduleUpdate();
     const disconnect = controller.disconnect;
     Object.assign(controller, {
@@ -327,7 +520,7 @@ const $591b1c2388287e20$export$d8d8c48ace6d5d1b = (controller)=>{
         disconnect () {
             valuesObserver.stop();
             treeObserver.stop();
-            (0, $81fb34e72745e1de$export$b7c6f809f4c7570b)(controller);
+            (0, $b06a48268576e1c4$export$b7c6f809f4c7570b)(controller);
             if (typeof disconnect === "function") disconnect.bind(controller)();
         }
     });
@@ -338,5 +531,5 @@ const $591b1c2388287e20$export$d8d8c48ace6d5d1b = (controller)=>{
 
 
 
-export {$591b1c2388287e20$export$d8d8c48ace6d5d1b as useValueBindings, $d4ae3234addc34de$export$bdd553fddd433dcb as nextTick};
+export {$74d2fd5bf8805eea$export$d8d8c48ace6d5d1b as useValueBindings, $1b65c17c68ad2def$export$bdd553fddd433dcb as nextTick};
 //# sourceMappingURL=main.js.map

@@ -20,6 +20,13 @@
   "source": "src/index.js",
   "main": "dist/main.js",
   "type": "module",
+  "targets": {
+    "main": {
+      "includeNodeModules": [
+        "dot-prop"
+      ]
+    }
+  },
   "scripts": {
     "watch": "parcel watch",
     "build": "parcel build"
