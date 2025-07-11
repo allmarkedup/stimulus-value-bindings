@@ -1,6 +1,6 @@
 import { getProperty } from "dot-prop";
 import { bind } from "./bind";
-import { walk, nextTick } from "./utils";
+import { walk } from "./utils";
 
 export function updateBindings(controller, callback) {
   const bindings = getBindings(controller);
