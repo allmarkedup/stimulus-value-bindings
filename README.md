@@ -1,17 +1,23 @@
 # stimulus-value-bindings
 
-_One-way reactive DOM bindings for [Stimulus JS](https://stimulus.hotwired.dev)._ 
+_Reactive DOM bindings for [Stimulus JS](https://stimulus.hotwired.dev)._ 
 
 ## Overview
 
-`stimulus-value-bindings` helps you drastically reduce the amount of boring _something-has-changed-and-now-the-DOM-needs-updating_ code in your Stimulus JS controllers.
+`stimulus-value-bindings` lets you bind element attributes and content in the DOM to Stimulus [controller values](https://stimulus.hotwired.dev/reference/values).
 
-It allows you to declaratively bind element attributes and content to [Stimulus controller values](https://stimulus.hotwired.dev/reference/values). When a value is changed (via the [setter methods](https://stimulus.hotwired.dev/reference/values#setters) or when the associated data attribute value is changed) any bound DOM elements will **automatically be updated** to reflect the new value.
+Bindings are **reactive** - every time a value is changed any bound attributes or contents in the DOM are automatically (and transparently) updated to reflect the value changes.
+
+Bindings are **one-way** - the flow of updates is always from the controller to the DOM. Direct manipulation to bound attributes in the DOM will not result in the controller values being updated.
+
+`stimulus-value-bindings` can help you drastically reduce the amount of boring _something-has-changed-and-now-the-DOM-needs-updating_ code in your Stimulus JS controllers.
 
 > [!NOTE]
-> This documentation is very bare-bones at the moment! More detailed information coming soon.
+> This documentation is a work-in-progress at the moment... keep checking back for updates.
 
 ## Simple counter example
+
+The example below is a simple 'counter' example that should help to demonstrate how reactive value bindings work.
 
 ▶️ [View this example running in JSBin](https://jsbin.com/hitotizesi/edit?html,output)
 
@@ -77,7 +83,7 @@ export default class extends Controller {
 }
 ```
 
-Element attributes as well as text and HTML content can then be declaratively bound to your controller values using [special `binding` data attributes](#binding-attributes).
+Element attributes as well as text content can then be declaratively bound to your controller values using [special `binding` data attributes](#binding-attributes).
 
 ```html
 <div data-controller="read-more">
@@ -93,46 +99,81 @@ Element attributes as well as text and HTML content can then be declaratively bo
 
 In the example above, clicking the `read more` button will toggle the `hidden` attribute on the 'additional content' `div` to hide or show it. The button text will additonally be updated to `read more` or `read less` according to whether the additional content is currently hidden or shown respectively. 
 
-## Binding attributes
+## Adding bindings to elements
 
-Binding attributes take the following format:
+Bindings are declared on DOM elements using data attributes with the following format:
 
 ```
-data-[identifier]-bind-[bindingType]="[propertyName]"
+data-[identifier]-bind-[bindingType]="[valueName]"
 ```
 
-* `[identifier]`: The [controller identifier](https://stimulus.hotwired.dev/reference/controllers#identifiers)
-* `[bindingType]`: See the [binding types](#binding-types) docs below.
-* `[propertyName]` The controller value getter property to bind to
+* `[identifier]`: The [identifier](https://stimulus.hotwired.dev/reference/controllers#identifiers) of the target controller
+* `[bindingType]`: See below for the types of bindings available.
+* `[valueName]` The name of the [value getter property](https://stimulus.hotwired.dev/reference/values#properties-and-attributes) to bind to.
 
-### Binding types
+### Element `textContent` binding
 
-The following types of bindings are available:
+The `textContent` of elements can be bound to controller values using _text bindings_.
 
-#### `text`
+```
+data-[identifier]-bind-text="[valueName]"
+```
 
-Updates the `textContent` of the bound element whenever the value is changed.
+For example:
+
+```js
+// defined in example-controller.js
+static values = {
+  count: Number
+}
+```
 
 ```html
-<h1 data-example-bind-text="titleValue"></h1>
+<div data-controller="example">
+  <span data-example-bind-text="countValue">0</span>
+</div>
 ```
 
-#### `html`
+### Attribute bindings
 
-Updates the `innerHTML` of the bound element whenever the value is changed.
+The values of DOM element attributes can be bound to controller values using _attribute bindings_.
+
+```
+data-[identifier]-bind-[attribute-name]="[valueName]"
+```
+
+For example:
+
+```js
+// defined in example-controller.js
+static values = {
+  imgUrl: String,
+}
+```
 
 ```html
-<article data-example-bind-html="articleTextValue"></article>
+<div data-controller="example">
+  <img data-example-bind-src="imgUrlValue"> 
+</div>
 ```
 
-#### `[attribute-name]`
+#### Boolean attributes
 
-Updates the value of the `attribute-name` attribute when the value is changed.
+Boolean attributes will be added or removed according to the truthiness of the value they are bound to.
+
+```js
+// defined in example-controller.js
+static values = {
+  hidden: Boolean,
+}
+```
 
 ```html
-<img data-example-bind-src="imgUrlValue"> // sync the img element `src` attribute value with the `imgUrl` value
-<div data-example-bind-hidden="hiddenValue"></div> // add/remove the `hidden` attribute when the `hidden` value is changed
-<img data-example-bind-data-theme="currentThemeValue"> // sync the `data-theme` attribute value with the `currentTheme` value
+<div data-controller="example">
+  <div data-example-bind-hidden="hiddenValue">some content</div> 
+</div>
 ```
 
+* When `hiddenValue` is `true`, the `hidden` attribute will be added to the bound element.
+* When `hiddenValue` is `false`, the `hidden` attribute will be removed from the element.
 
