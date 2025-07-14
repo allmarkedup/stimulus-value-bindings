@@ -26,7 +26,7 @@ export function bind(element, name, value) {
 }
 
 function bindText(element, value) {
-  element.innerText = value;
+  element.textContent = value;
 }
 
 function bindHTML(element, value) {
