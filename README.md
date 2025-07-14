@@ -177,3 +177,4 @@ static values = {
 * When `hiddenValue` is `true`, the `hidden` attribute will be added to the bound element.
 * When `hiddenValue` is `false`, the `hidden` attribute will be removed from the element.
 
+

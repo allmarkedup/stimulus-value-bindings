@@ -27,20 +27,6 @@ function $8f9b49c1a83abf36$export$588732934346abbf(el, callback) {
 }
 
 
-function $e70725f4c88e33dc$export$61fc7d43ac8f84b0(func, wait) {
-    var timeout;
-    return function() {
-        const context = this, args = arguments;
-        const later = function() {
-            timeout = null;
-            func.apply(context, args);
-        };
-        clearTimeout(timeout);
-        timeout = setTimeout(later, wait);
-    };
-}
-
-
 
 
 let $48a071f4e22bc27f$var$flushPending = false;
