@@ -32,7 +32,7 @@
   "scripts": {
     "watch": "parcel watch",
     "build": "parcel build",
-    "test": "node --experimental-vm-modules node_modules/jest/bin/jest.js",
+    "test": "node --experimental-vm-modules --disable-warning=ExperimentalWarning node_modules/jest/bin/jest.js",
     "release": "release-it"
   },
   "dependencies": {

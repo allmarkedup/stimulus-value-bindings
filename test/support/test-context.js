@@ -4,9 +4,13 @@ export class TestContext {
   #application = null;
   #controllerClass = null;
 
-  constructor(identifier, Controller) {
-    this.identifier = identifier;
-    this.#controllerClass = Controller;
+  constructor(...args) {
+    if (args.length === 2) {
+      [this.identifier, this.#controllerClass] = args;
+    } else {
+      this.identifier = "subject";
+      this.#controllerClass = args[0];
+    }
   }
 
   async setup(html) {
@@ -29,5 +33,13 @@ export class TestContext {
   get controller() {
     const element = document.body.firstElementChild;
     return this.#application.getControllerForElementAndIdentifier(element, this.identifier);
+  }
+
+  get elements() {
+    const testElements = {};
+    Array.from(document.querySelectorAll("[data-test-element]")).forEach((el) => {
+      testElements[el.getAttribute("data-test-element")] = el;
+    });
+    return testElements;
   }
 }

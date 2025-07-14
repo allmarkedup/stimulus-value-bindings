@@ -1,96 +1,136 @@
 import { TestContext } from "./support/test-context";
 import { waitFor } from "@testing-library/dom";
 import userEvent from "@testing-library/user-event";
-import CounterController from "./fixtures/counter-controller";
+import TestController from "./support/test-controller";
 
-const context = new TestContext("counter", CounterController);
+const context = new TestContext(
+  class extends TestController {
+    static values = {
+      count: Number,
+      unit: {
+        type: String,
+        default: "things",
+      },
+    };
+
+    increment() {
+      this.countValue++;
+    }
+
+    changeUnit(event) {
+      this.unitValue = event.params.unit;
+    }
+  }
+);
 
 afterEach(() => context.teardown());
 
 describe("default values", () => {
   it("sets the initial text content of bound elements", async () => {
-    const { controller } = await context.setup(`
-      <div data-controller="counter">
-        <span data-counter-target="count" data-counter-bind-text="countValue"></span>
-        <span data-counter-target="rating" data-counter-bind-text="rating"></span>
+    const { elements } = await context.setup(`
+      <div data-controller="subject">
+        <span data-subject-bind-text="countValue" data-test-element="count"></span>
+        <span data-subject-bind-text="unitValue" data-test-element="unit"></span>
       </div>
     `);
 
-    expect(controller.countTarget.textContent).toBe("0");
-    expect(controller.ratingTarget).toBeEmptyDOMElement();
+    expect(elements.count.textContent).toBe("0");
+    expect(elements.unit.textContent).toBe("things");
   });
 
   it("respects default values set via data attributes", async () => {
-    const { controller } = await context.setup(`
-      <div data-controller="counter" data-counter-count-value="5">
-        <span data-counter-target="count" data-counter-bind-text="countValue"></span>
-        <span data-counter-target="rating" data-counter-bind-text="rating"></span>
+    const { elements } = await context.setup(`
+      <div data-controller="subject" data-subject-count-value="5" data-subject-unit-value="items">
+        <span data-subject-bind-text="countValue" data-test-element="count"></span>
+        <span data-subject-bind-text="unitValue" data-test-element="unit"></span>
       </div>
     `);
 
-    expect(controller.countTarget.textContent).toBe("5");
-    expect(controller.ratingTarget.textContent).toBe("⭐️⭐️⭐️⭐️⭐️");
+    expect(elements.count.textContent).toBe("5");
+    expect(elements.unit.textContent).toBe("items");
   });
 });
 
 describe("value updates", () => {
   it("updates the text content when changed within a controller", async () => {
-    const { controller } = await context.setup(`
-      <div data-controller="counter">
-        <span data-counter-target="count" data-counter-bind-text="countValue"></span>
-        <button data-action="click->counter#increment" data-counter-target="up">+</button>
+    const { elements } = await context.setup(`
+      <div data-controller="subject">
+        <span data-subject-bind-text="countValue" data-test-element="count"></span>
+        <span data-subject-bind-text="unitValue" data-test-element="unit"></span>
+        <button data-action="click->subject#increment" data-test-element="incrementer">+</button>
+        <button data-action="click->subject#changeUnit" data-subject-unit-param="items" data-test-element="unitChanger">change unit</button>
       </div>
     `);
 
     const user = userEvent.setup();
-    const { countTarget, upTarget } = controller;
+    const { count, incrementer } = elements;
 
-    expect(countTarget.textContent).toBe("0");
+    expect(count.textContent).toBe("0");
 
-    await user.click(upTarget);
-    expect(countTarget.textContent).toBe("1");
+    await user.click(incrementer);
+    expect(count.textContent).toBe("1");
 
-    await user.click(upTarget);
-    expect(countTarget.textContent).toBe("2");
+    await user.click(incrementer);
+    expect(count.textContent).toBe("2");
+
+    const { unit, unitChanger } = elements;
+
+    expect(unit.textContent).toBe("things");
+
+    await user.click(unitChanger);
+    expect(unit.textContent).toBe("items");
   });
 
   it("updates the text content when the controller value setter method is called directly", async () => {
-    const { controller } = await context.setup(`
-      <div data-controller="counter">
-        <span data-counter-target="count" data-counter-bind-text="countValue"></span>
+    const { controller, elements } = await context.setup(`
+      <div data-controller="subject">
+        <span data-subject-bind-text="countValue" data-test-element="count"></span>
+        <span data-subject-bind-text="unitValue" data-test-element="unit"></span>
       </div>
     `);
-    const { countTarget } = controller;
+    const { count, unit } = elements;
 
-    expect(countTarget.textContent).toBe("0");
+    expect(count.textContent).toBe("0");
+    expect(unit.textContent).toBe("things");
 
     controller.countValue = 1;
     await waitFor(() => {
-      expect(countTarget.textContent).toBe("1");
+      expect(count.textContent).toBe("1");
     });
 
     controller.countValue = 123;
     await waitFor(() => {
-      expect(countTarget.textContent).toBe("123");
+      expect(count.textContent).toBe("123");
+    });
+
+    controller.unitValue = "doodads";
+    await waitFor(() => {
+      expect(unit.textContent).toBe("doodads");
     });
   });
 
   it("updates the text content when value attributes change", async () => {
-    const { controller } = await context.setup(`
-      <div data-controller="counter">
-        <span data-counter-target="count" data-counter-bind-text="countValue"></span>
+    const { controller, elements } = await context.setup(`
+      <div data-controller="subject">
+        <span data-subject-bind-text="countValue" data-test-element="count"></span>
+        <span data-subject-bind-text="unitValue" data-test-element="unit"></span>
       </div>
     `);
-    const { countTarget, element } = controller;
+    const { count, unit } = elements;
 
-    element.setAttribute("data-counter-count-value", "20");
+    controller.element.setAttribute("data-subject-count-value", "20");
     await waitFor(() => {
-      expect(countTarget.textContent).toBe("20");
+      expect(count.textContent).toBe("20");
     });
 
-    element.setAttribute("data-counter-count-value", "456");
+    controller.element.setAttribute("data-subject-count-value", "456");
     await waitFor(() => {
-      expect(countTarget.textContent).toBe("456");
+      expect(count.textContent).toBe("456");
+    });
+
+    controller.element.setAttribute("data-subject-unit-value", "widgets");
+    await waitFor(() => {
+      expect(unit.textContent).toBe("widgets");
     });
   });
 });
