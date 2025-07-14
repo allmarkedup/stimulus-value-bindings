@@ -22,19 +22,28 @@
   "type": "module",
   "targets": {
     "main": {
-      "includeNodeModules": [
-        "dot-prop"
-      ]
+      "context": "browser",
+      "engines": {
+        "browsers": "> 0.5%, last 2 versions, not dead"
+      },
+      "includeNodeModules": true
     }
   },
   "scripts": {
     "watch": "parcel watch",
-    "build": "parcel build"
+    "build": "parcel build",
+    "test": "node --experimental-vm-modules node_modules/jest/bin/jest.js"
   },
   "dependencies": {
     "dot-prop": "^9.0.0"
   },
   "devDependencies": {
+    "@hotwired/stimulus": "^3.2.2",
+    "@testing-library/dom": "^10.4.0",
+    "@testing-library/jest-dom": "^6.6.3",
+    "@testing-library/user-event": "^14.6.1",
+    "jest": "^30.0.4",
+    "jest-environment-jsdom": "^30.0.4",
     "parcel": "^2.15.2"
   }
 }
