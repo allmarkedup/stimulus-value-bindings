@@ -32,7 +32,8 @@
   "scripts": {
     "watch": "parcel watch",
     "build": "parcel build",
-    "test": "node --experimental-vm-modules node_modules/jest/bin/jest.js"
+    "test": "node --experimental-vm-modules node_modules/jest/bin/jest.js",
+    "release": "release-it"
   },
   "dependencies": {
     "dot-prop": "^9.0.0"
@@ -44,6 +45,7 @@
     "@testing-library/user-event": "^14.6.1",
     "jest": "^30.0.4",
     "jest-environment-jsdom": "^30.0.4",
-    "parcel": "^2.15.2"
+    "parcel": "^2.15.2",
+    "release-it": "^19.0.3"
   }
 }
