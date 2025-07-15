@@ -1,19 +1,24 @@
-# stimulus-value-bindings
+# stimulus-value-bindings 🪢
 
-_Reactive DOM bindings for [Stimulus JS](https://stimulus.hotwired.dev)._ 
+_Reactive DOM value bindings for [Stimulus JS](https://stimulus.hotwired.dev)._ 
+
+![NPM Version](https://img.shields.io/npm/v/stimulus-value-bindings)
+ [![CI](https://github.com/allmarkedup/stimulus-value-bindings/actions/workflows/ci.yml/badge.svg?branch=main)](https://github.com/allmarkedup/stimulus-value-bindings/actions/workflows/ci.yml)
 
 ## Overview
 
-`stimulus-value-bindings` lets you bind element attributes and content in the DOM to Stimulus [controller values](https://stimulus.hotwired.dev/reference/values).
+`stimulus-value-bindings` allows DOM element attribute values to be _reactively_ bound to Stimulus [controller values](https://stimulus.hotwired.dev/reference/values)
+so that the DOM attributes are automatically updated when their bound value property changes.
 
-Bindings are **reactive** - every time a value is changed any bound attributes or contents in the DOM are automatically (and transparently) updated to reflect the value changes.
+Bindings are:
 
-Bindings are **one-way** - the flow of updates is always from the controller to the DOM. Direct manipulation to bound attributes in the DOM will not result in the controller values being updated.
+* **reactive** - every time a value is changed any bound attributes (or text contents) in the DOM are automatically (and transparently) updated to reflect the changes.
+* **one-way** - the flow of updates is always from the controller to the DOM. Direct manipulation to bound attributes in the DOM will not result in the controller values being updated.
 
 `stimulus-value-bindings` can help you drastically reduce the amount of boring _something-has-changed-and-now-the-DOM-needs-updating_ code in your Stimulus JS controllers.
 
-> [!NOTE]
-> This documentation is a work-in-progress at the moment... keep checking back for updates.
+> [!WARNING]
+> This documentation is a work-in-progress! Please open an issue if you are having problems.
 
 ## Simple counter example
 
@@ -84,6 +89,17 @@ export default class extends Controller {
   connect(){
     useValueBindings(this);
   }
+}
+```
+
+Alternatively, the package also exports a 'ready to go' `ValueBindingsController` base controller if you prefer to extend rather than compose your classes:
+
+
+```js
+import { ValueBindingsController } from "stimulus-value-bindings";
+
+export default class extends ValueBindingsController {
+  // ...
 }
 ```
 
