@@ -4,15 +4,14 @@ import { walk } from "./utils";
 
 export function updateBindings(controller, callback) {
   const bindings = getBindings(controller);
+
   bindings.forEach((binding) => {
     let { node, name, path, negated } = binding;
     if (!controller.element.contains(node)) {
       // clean up any bindings for elements that have been removed from the DOM
       bindings.delete(binding);
     } else {
-      // Update bindings for the node
-      const value = getProperty(controller, path);
-      bind(node, name, negated ? !value : value);
+      updateBindingsForNode(controller, node, name, path, negated);
       node.removeAttribute("data-cloak");
     }
   });
@@ -21,6 +20,14 @@ export function updateBindings(controller, callback) {
     // Run the callback once all bindings have been updated.
     callback();
   }
+}
+
+function updateBindingsForNode(controller, node, name, path, negated) {
+  let value = getProperty(controller, path);
+  if (typeof value === "function") {
+    value = value.bind(controller)(node);
+  }
+  bind(node, name, negated ? !value : value);
 }
 
 export function registerBindings(controller) {
