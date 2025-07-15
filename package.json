@@ -1,6 +1,6 @@
 {
   "name": "stimulus-value-bindings",
-  "version": "0.0.4",
+  "version": "0.0.5",
   "description": "One-way reactive DOM bindings for Stimulus JS",
   "author": "Mark Perkins",
   "license": "MIT",
