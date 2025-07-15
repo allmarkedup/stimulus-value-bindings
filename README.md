@@ -137,7 +137,7 @@ data-[identifier]-bind-[bindingType]="[valueName]"
 * `[bindingType]`: See below for the types of bindings available.
 * `[valueName]` The name of the [value getter property](https://stimulus.hotwired.dev/reference/values#properties-and-attributes) to bind to.
 
-### Attribute bindings
+### Binding attributes
 
 The values of DOM element attributes can be bound to controller values using _attribute bindings_.
 
@@ -148,9 +148,11 @@ data-[identifier]-bind-[attribute-name]="[valueName]"
 For example:
 
 ```js
-// defined in example-controller.js
-static values = {
-  progress: 0
+class ExampleController extends Controller {
+   static values = {
+    progress: Number
+  }
+  // ...
 }
 ```
 
@@ -166,9 +168,11 @@ static values = {
 Boolean attributes will be added or removed according to the truthiness of the value they are bound to.
 
 ```js
-// defined in example-controller.js
-static values = {
-  hidden: Boolean,
+class ExampleController extends Controller {
+   static values = {
+    hidden: Boolean,
+  }
+  // ...
 }
 ```
 
@@ -181,8 +185,99 @@ static values = {
 * When `hiddenValue` is `true`, the `hidden` attribute will be added to the bound element.
 * When `hiddenValue` is `false`, the `hidden` attribute will be removed from the element.
 
+### Binding classes
 
-### Element `textContent` binding
+You can dynamically add and remove classes on elements using _class bindings_.
+
+```
+data-[identifier]-bind-class="[valueName]"
+```
+
+The bound value should evaluate to one of the following:
+
+* a string of classes - i.e. `"class1 class2 class2"`
+* an array of classes - i.e.`["class1", "class2", "class2"]`
+* a class object - i.e. `{ "class1 class2 class3": true, "class4": false }`
+
+Any existing classes applied using the standard `class` attribute will be preserved across changes to the bound class value property.
+
+#### Array value example
+
+```js
+class ExampleController extends Controller {
+   static values = {
+    titleClasses: {
+      type: Array,
+      default: ["text-lg", "font-bold"]
+    }
+  }
+  // ...
+}
+```
+
+```html
+<div data-controller="example">
+  <h1 data-example-bind-class="titleClassesValue">This is the title</h1>
+</div>
+```
+
+The `h1` element will initially be rendered with the default classes applied:
+
+```html
+<h1 class="text-lg font-bold">This is the title</h1>
+```
+
+If another class is added to the `titleClasses` value, the `h1` will automatically be updated to include the new class:
+
+```js
+this.titleClassesValue.push("text-red-600");
+```
+
+```html
+<h1 class="text-lg font-bold text-red-600">This is the title</h1>
+```
+
+#### Class object example
+
+```js
+class ExampleController extends Controller {
+   static values = {
+    theme: {
+      type: String,
+      default: "primary"
+    }
+  },
+
+  get themeClasses(){
+    return {
+      "bg-blue-50 border-blue-500": this.themeValue === "primary",
+      "bg-red-50 border-red-500": this.themeValue === "error",
+      "font-sans": true,
+    };
+  }
+  // ...
+}
+```
+
+```html
+<div data-controller="example">
+  <h1 data-example-bind-class="themeClasses" class="text-lg">This is the title</h1>
+</div>
+```
+
+```html
+<!-- `this.themeValue = "default";` -->
+<h1 class="bg-red-50 border-red-500 text-lg">This is the title</h1>
+```
+
+```html
+<!-- `this.themeValue = "error";` -->
+<h1 class="bg-red-50 border-red-500 text-lg">This is the title</h1>
+```
+
+
+
+### Binding text content
 
 The `textContent` of elements can be bound to controller values using _text bindings_.
 
@@ -205,7 +300,7 @@ static values = {
 </div>
 ```
 
-### Element bindings
+### Binding elements to objects
 
 Elements can be bound to `Object`-type values. An attribute or content binding will be created for each of the object's properties.
 

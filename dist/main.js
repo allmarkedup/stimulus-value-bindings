@@ -325,8 +325,47 @@ function $e831555dc9bb4016$export$13f626a1d0c23ea1(object) {
 
 
 
+function $3f0461988d854c09$export$2706f8d45625eda6(el, value) {
+    if (Array.isArray(value)) return $3f0461988d854c09$var$setClassesFromString(el, value.join(" "));
+    else if (typeof value === "object" && value !== null) return $3f0461988d854c09$var$setClassesFromObject(el, value);
+    return $3f0461988d854c09$var$setClassesFromString(el, value);
+}
+function $3f0461988d854c09$var$setClassesFromString(el, classString) {
+    let missingClasses = (classString)=>classString.split(" ").filter((i)=>!el.classList.contains(i)).filter(Boolean);
+    let classes = missingClasses(classString);
+    el.classList.add(...classes);
+    return ()=>el.classList.remove(...classes);
+}
+function $3f0461988d854c09$var$setClassesFromObject(el, classObject) {
+    let split = (classString)=>classString.split(" ").filter(Boolean);
+    let forAdd = Object.entries(classObject).flatMap(([classString, bool])=>bool ? split(classString) : false).filter(Boolean);
+    let forRemove = Object.entries(classObject).flatMap(([classString, bool])=>!bool ? split(classString) : false).filter(Boolean);
+    let added = [];
+    let removed = [];
+    forRemove.forEach((i)=>{
+        if (el.classList.contains(i)) {
+            el.classList.remove(i);
+            removed.push(i);
+        }
+    });
+    forAdd.forEach((i)=>{
+        if (!el.classList.contains(i)) {
+            el.classList.add(i);
+            added.push(i);
+        }
+    });
+    return ()=>{
+        removed.forEach((i)=>el.classList.add(i));
+        added.forEach((i)=>el.classList.remove(i));
+    };
+}
+
+
 function $6bb642d3be92d590$export$2385a24977818dd0(element, name, value) {
     switch(name){
+        case "class":
+            $6bb642d3be92d590$var$bindClasses(element, value);
+            break;
         case "all":
             $6bb642d3be92d590$var$bindAll(element, value);
             break;
@@ -344,6 +383,10 @@ function $6bb642d3be92d590$export$2385a24977818dd0(element, name, value) {
             $6bb642d3be92d590$var$bindAttribute(element, name, value);
             break;
     }
+}
+function $6bb642d3be92d590$var$bindClasses(element, value) {
+    if (element.__value_bindings_undo_classes) element.__value_bindings_undo_classes();
+    element.__value_bindings_undo_classes = (0, $3f0461988d854c09$export$2706f8d45625eda6)(element, value);
 }
 function $6bb642d3be92d590$var$bindText(element, value) {
     element.textContent = value;
@@ -423,14 +466,17 @@ function $438b9fc6d2bad1a9$export$816b23a2bc3d44ec(controller, callback) {
         if (!controller.element.contains(node)) // clean up any bindings for elements that have been removed from the DOM
         bindings.delete(binding);
         else {
-            // Update bindings for the node
-            const value = (0, $e831555dc9bb4016$export$63ef76b19cf4a753)(controller, path);
-            (0, $6bb642d3be92d590$export$2385a24977818dd0)(node, name, negated ? !value : value);
+            $438b9fc6d2bad1a9$var$updateBindingsForNode(controller, node, name, path, negated);
             node.removeAttribute("data-cloak");
         }
     });
     if (typeof callback === "function") // Run the callback once all bindings have been updated.
     callback();
+}
+function $438b9fc6d2bad1a9$var$updateBindingsForNode(controller, node, name, path, negated) {
+    let value = (0, $e831555dc9bb4016$export$63ef76b19cf4a753)(controller, path);
+    if (typeof value === "function") value = value.bind(controller)(node);
+    (0, $6bb642d3be92d590$export$2385a24977818dd0)(node, name, negated ? !value : value);
 }
 function $438b9fc6d2bad1a9$export$2696433f89f63f2f(controller) {
     if (!$438b9fc6d2bad1a9$var$bindingsAreInitialized(controller)) {

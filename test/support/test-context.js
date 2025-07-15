@@ -35,6 +35,10 @@ export class TestContext {
     return this.#application.getControllerForElementAndIdentifier(element, this.identifier);
   }
 
+  get subject() {
+    return this.controller.element;
+  }
+
   get elements() {
     const testElements = {};
     Array.from(document.querySelectorAll("[data-test-element]")).forEach((el) => {

@@ -1,7 +1,12 @@
 import { getProperty } from "dot-prop";
+import { setClasses } from "./classes";
 
 export function bind(element, name, value) {
   switch (name) {
+    case "class":
+      bindClasses(element, value);
+      break;
+
     case "all":
       bindAll(element, value);
       break;
@@ -23,6 +28,11 @@ export function bind(element, name, value) {
       bindAttribute(element, name, value);
       break;
   }
+}
+
+function bindClasses(element, value) {
+  if (element.__value_bindings_undo_classes) element.__value_bindings_undo_classes();
+  element.__value_bindings_undo_classes = setClasses(element, value);
 }
 
 function bindText(element, value) {
