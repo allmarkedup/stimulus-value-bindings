@@ -56,10 +56,38 @@ export default class extends Controller {
 
 When the `+` or `-` buttons are clicked the `span#count` element text content will be automatically be updated to reflect the current value of the `count` controller value. The counter display is kept in sync with the `count` value without needing to manually update the DOM after each change.
 
+## Installation
+
+Add the `stimulus-value-bindings` package to your `package.json`:
+
+#### Using NPM:
+
+```
+npm i stimulus-value-bindings --save
+```
+
+#### Using Yarn:
+
+```
+yarn add stimulus-value-bindings
+```
+
 ## Usage
 
-Add the `useValueBindings` mixin to the `connect` method in your Stimulus controller and define one or more `value` properties in [the usual way](https://stimulus.hotwired.dev/reference/values):
+The `stimulus-value-bindings` package exports a `useValueBinding` function that can be used to add reactive value binding functionality to controllers.
 
+```js
+import { Controller } from "@hotwired/stimulus";
+import { useValueBindings } from "stimulus-value-bindings";
+
+export default class extends Controller {
+  connect(){
+    useValueBindings(this);
+  }
+}
+```
+
+You can then delare [controller values](https://stimulus.hotwired.dev/reference/values) in the usual way, and bind DOM element attribute values and content to them using [binding data attributes](#binding-attributes).
 
 ```js
 // read-more-controller.js
@@ -82,8 +110,6 @@ export default class extends Controller {
   }
 }
 ```
-
-Element attributes as well as text content can then be declaratively bound to your controller values using [special `binding` data attributes](#binding-attributes).
 
 ```html
 <div data-controller="read-more">
@@ -111,29 +137,6 @@ data-[identifier]-bind-[bindingType]="[valueName]"
 * `[bindingType]`: See below for the types of bindings available.
 * `[valueName]` The name of the [value getter property](https://stimulus.hotwired.dev/reference/values#properties-and-attributes) to bind to.
 
-### Element `textContent` binding
-
-The `textContent` of elements can be bound to controller values using _text bindings_.
-
-```
-data-[identifier]-bind-text="[valueName]"
-```
-
-For example:
-
-```js
-// defined in example-controller.js
-static values = {
-  count: Number
-}
-```
-
-```html
-<div data-controller="example">
-  <span data-example-bind-text="countValue">0</span>
-</div>
-```
-
 ### Attribute bindings
 
 The values of DOM element attributes can be bound to controller values using _attribute bindings_.
@@ -147,13 +150,14 @@ For example:
 ```js
 // defined in example-controller.js
 static values = {
-  imgUrl: String,
+  progress: 0
 }
 ```
 
 ```html
 <div data-controller="example">
-  <img data-example-bind-src="imgUrlValue"> 
+  <h4>Uploading...</h4> 
+  <progress data-example-bind-value="progressValue" max="100"></progress>
 </div>
 ```
 
@@ -178,3 +182,63 @@ static values = {
 * When `hiddenValue` is `false`, the `hidden` attribute will be removed from the element.
 
 
+### Element `textContent` binding
+
+The `textContent` of elements can be bound to controller values using _text bindings_.
+
+```
+data-[identifier]-bind-text="[valueName]"
+```
+
+For example:
+
+```js
+// defined in example-controller.js
+static values = {
+  count: Number
+}
+```
+
+```html
+<div data-controller="example">
+  <span data-example-bind-text="countValue">0</span>
+</div>
+```
+
+### Element bindings
+
+Elements can be bound to `Object`-type values. An attribute or content binding will be created for each of the object's properties.
+
+```
+data-[identifier]-bind="[valueName]"
+```
+
+For example:
+
+```js
+// defined in example-controller.js
+static values = {
+  input: {
+    type: Object,
+    default: {
+      value: "default value",
+      disabled: true
+    }
+  }
+}
+```
+
+```html
+<div data-controller="example">
+  <input data-example-bind="inputValue">
+  <!-- renders: <input disabled="disabled" value="default value"> -->
+</div>
+```
+
+## Credits
+
+`stimulus-value-bindings` is inspired by (and borrows code from!) the [`x-bind`](https://alpinejs.dev/directives/bind) functionality in Alpine JS.
+
+## License
+
+`stimulus-value-bindings` is available as open source under the terms of the MIT License.
