@@ -1,16 +1,22 @@
-# stimulus-value-bindings 🪢
+<center>
 
-_Reactive DOM value bindings for [Stimulus JS](https://stimulus.hotwired.dev)._ 
+<img src=".github/assets/svb.png" alt="stimulus-value-bindings" width="440"> 
+
+_⚡️ Reactive DOM bindings for [Stimulus JS](https://stimulus.hotwired.dev). ⚡️_
 
 ![NPM Version](https://img.shields.io/npm/v/stimulus-value-bindings)
  [![CI](https://github.com/allmarkedup/stimulus-value-bindings/actions/workflows/ci.yml/badge.svg?branch=main)](https://github.com/allmarkedup/stimulus-value-bindings/actions/workflows/ci.yml)
 
-## Overview
+</center>
 
+---
+
+## Overview
+ 
 `stimulus-value-bindings` allows DOM element attribute values to be _reactively_ bound to Stimulus [controller values](https://stimulus.hotwired.dev/reference/values)
 so that the DOM attributes are automatically updated when their bound value property changes.
 
-Bindings are:
+Bindings are: 
 
 * **reactive** - every time a value is changed any bound attributes (or text contents) in the DOM are automatically (and transparently) updated to reflect the changes.
 * **one-way** - the flow of updates is always from the controller to the DOM. Direct manipulation to bound attributes in the DOM will not result in the controller values being updated.
@@ -92,7 +98,7 @@ export default class extends Controller {
 }
 ```
 
-Alternatively, the package also exports a 'ready to go' `ValueBindingsController` base controller if you prefer to extend rather than compose your classes:
+Alternatively, the package also exports a 'ready to go' `ValueBindingsController` base controller if you prefer extension over composition for your classes:
 
 
 ```js
@@ -103,7 +109,7 @@ export default class extends ValueBindingsController {
 }
 ```
 
-You can then delare [controller values](https://stimulus.hotwired.dev/reference/values) in the usual way, and bind DOM element attribute values and content to them using [binding data attributes](#binding-attributes).
+You can then specify [controller values](https://stimulus.hotwired.dev/reference/values) in the usual way. These will be watched for changes to trigger any required DOM updates.
 
 ```js
 // read-more-controller.js
@@ -127,6 +133,8 @@ export default class extends Controller {
 }
 ```
 
+Now you can bind your DOM element attribute values (or text content) to your controller values using [binding data attributes](#adding-bindings-to-elements).
+
 ```html
 <div data-controller="read-more">
   <p>This is the summary content.</p>
@@ -146,19 +154,23 @@ In the example above, clicking the `read more` button will toggle the `hidden` a
 Bindings are declared on DOM elements using data attributes with the following format:
 
 ```
-data-[identifier]-bind-[bindingType]="[valueName]"
+data-[identifier]-bind-[bindingType]="[property]"
 ```
 
-* `[identifier]`: The [identifier](https://stimulus.hotwired.dev/reference/controllers#identifiers) of the target controller
-* `[bindingType]`: See below for the types of bindings available.
-* `[valueName]` The name of the [value getter property](https://stimulus.hotwired.dev/reference/values#properties-and-attributes) to bind to.
+* `[identifier]`: The [identifier](https://stimulus.hotwired.dev/reference/controllers#identifiers) of the target controller.
+* `[bindingType]`: The type of binding required. See below for details.
+* `[property]` The bound property specifier.
+
+### Property specifiers
+
+
 
 ### Binding attributes
 
 The values of DOM element attributes can be bound to controller values using _attribute bindings_.
 
 ```
-data-[identifier]-bind-[attribute-name]="[valueName]"
+data-[identifier]-bind-[attribute-name]="[property]"
 ```
 
 For example:
@@ -298,7 +310,7 @@ class ExampleController extends Controller {
 The `textContent` of elements can be bound to controller values using _text bindings_.
 
 ```
-data-[identifier]-bind-text="[valueName]"
+data-[identifier]-bind-text="[property]"
 ```
 
 For example:
@@ -321,7 +333,7 @@ static values = {
 Elements can be bound to `Object`-type values. An attribute or content binding will be created for each of the object's properties.
 
 ```
-data-[identifier]-bind="[valueName]"
+data-[identifier]-bind="[property]"
 ```
 
 For example:
