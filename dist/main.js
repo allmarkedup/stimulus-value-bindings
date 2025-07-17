@@ -27,6 +27,19 @@ function $8f9b49c1a83abf36$export$588732934346abbf(el, callback) {
 }
 
 
+const $0cc2995dee06fcb2$var$tag = "use-value-bindings";
+function $0cc2995dee06fcb2$export$c106dd0671a0fc2d(message, ...args) {
+    $0cc2995dee06fcb2$var$log("warn", message, ...args);
+}
+function $0cc2995dee06fcb2$export$1c9f709888824e05(message, ...args) {
+    $0cc2995dee06fcb2$var$log("debug", message, ...args);
+}
+function $0cc2995dee06fcb2$var$log(level, message, ...args) {
+    if (process.env.NODE_ENV === "test") return;
+    console[level](`%c${$0cc2995dee06fcb2$var$tag}%c ${message}`, "background-color: RebeccaPurple; color: white;", "color: yellow;", ...args);
+}
+
+
 
 
 let $48a071f4e22bc27f$var$flushPending = false;
@@ -324,7 +337,6 @@ function $e831555dc9bb4016$export$13f626a1d0c23ea1(object) {
 }
 
 
-
 function $3f0461988d854c09$export$2706f8d45625eda6(el, value) {
     if (Array.isArray(value)) return $3f0461988d854c09$var$setClassesFromString(el, value.join(" "));
     else if (typeof value === "object" && value !== null) return $3f0461988d854c09$var$setClassesFromObject(el, value);
@@ -459,43 +471,71 @@ function $6bb642d3be92d590$var$attributeShouldntBePreservedIfFalsy(name) {
 
 
 
-function $438b9fc6d2bad1a9$export$816b23a2bc3d44ec(controller, callback) {
-    const bindings = $438b9fc6d2bad1a9$export$afc479602647d2a4(controller);
-    bindings.forEach((binding)=>{
-        let { node: node, name: name, path: path, negated: negated } = binding;
-        if (!controller.element.contains(node)) // clean up any bindings for elements that have been removed from the DOM
-        bindings.delete(binding);
-        else {
-            $438b9fc6d2bad1a9$var$updateBindingsForNode(controller, node, name, path, negated);
-            node.removeAttribute("data-cloak");
-        }
-    });
-    if (typeof callback === "function") // Run the callback once all bindings have been updated.
-    callback();
+
+
+function $c08ab6deeb471760$export$d812c8e1906863d0(object, lookup, modifiers, fnArgs = []) {
+    let value = (0, $e831555dc9bb4016$export$63ef76b19cf4a753)(object, lookup);
+    if (typeof value === "undefined") // Try the value getter property
+    value = (0, $e831555dc9bb4016$export$63ef76b19cf4a753)(object, `${lookup}Value`);
+    if (typeof value === "function") // if it's a function then call it to get the value.
+    // the node is supplied as the first argument.
+    value = value.bind(object)(...fnArgs);
+    // apply any modifiers to the resolved value
+    if (typeof value === "undefined") (0, $0cc2995dee06fcb2$export$c106dd0671a0fc2d)(`could not resolve value '${lookup}' for object '${object.identifier}'`);
+    else return $c08ab6deeb471760$var$applyModifiers(value, modifiers);
 }
-function $438b9fc6d2bad1a9$var$updateBindingsForNode(controller, node, name, path, negated) {
-    let value = (0, $e831555dc9bb4016$export$63ef76b19cf4a753)(controller, path);
-    if (typeof value === "function") value = value.bind(controller)(node);
-    (0, $6bb642d3be92d590$export$2385a24977818dd0)(node, name, negated ? !value : value);
+function $c08ab6deeb471760$var$applyModifiers(value, modifiers = []) {
+    for(let i = 0; i < modifiers.length; i++)switch(modifiers[i]){
+        case "not":
+            value = $c08ab6deeb471760$var$applyNotModifier(value);
+            break;
+        default:
+            (0, $0cc2995dee06fcb2$export$c106dd0671a0fc2d)(`unknown modifier '${modifiers[i]}'`);
+            break;
+    }
+    return value;
 }
+function $c08ab6deeb471760$var$applyNotModifier(value) {
+    return !value;
+}
+
+
+const $438b9fc6d2bad1a9$var$bindingAttrMatcher = "bind-?([\\w-]*)(?::([\\w:-]+))?";
 function $438b9fc6d2bad1a9$export$2696433f89f63f2f(controller) {
     if (!$438b9fc6d2bad1a9$var$bindingsAreInitialized(controller)) {
         controller.__value_bindings = new Set();
         $438b9fc6d2bad1a9$export$9d08f9cef6f4df8b(controller, controller.element);
     }
 }
+function $438b9fc6d2bad1a9$export$816b23a2bc3d44ec(controller, callback) {
+    const bindings = $438b9fc6d2bad1a9$export$afc479602647d2a4(controller);
+    bindings.forEach((binding)=>{
+        const { node: node } = binding;
+        if (!controller.element.contains(node)) // clean up any bindings for elements that have been removed from the DOM
+        bindings.delete(binding);
+        else {
+            $438b9fc6d2bad1a9$var$updateBindingsForNode(controller, binding);
+            node.removeAttribute("data-cloak");
+        }
+    });
+    if (typeof callback === "function") // Run the callback once all bindings have been updated.
+    callback();
+}
+function $438b9fc6d2bad1a9$var$updateBindingsForNode(controller, binding) {
+    const { node: node, type: type, lookup: lookup, modifiers: modifiers } = binding;
+    const value = (0, $c08ab6deeb471760$export$d812c8e1906863d0)(controller, lookup, modifiers, [
+        node
+    ]);
+    (0, $6bb642d3be92d590$export$2385a24977818dd0)(node, type, value);
+}
 function $438b9fc6d2bad1a9$export$9d08f9cef6f4df8b(controller, rootNode) {
-    const attrPrefix = `data-${controller.identifier}-bind`;
     (0, $8f9b49c1a83abf36$export$588732934346abbf)(rootNode, (node)=>{
-        Array.from(node.attributes).filter(({ name: name })=>name.startsWith(attrPrefix)).forEach((attr)=>{
-            let negated = false;
-            let path = attr.value;
-            if (path.startsWith("!")) {
-                negated = true;
-                path = path.replace("!", "");
-            }
-            const name = attr.name === attrPrefix ? "all" : attr.name.replace(`${attrPrefix}-`, "");
-            $438b9fc6d2bad1a9$export$794005cd6f1aea3(controller, node, name, path, negated);
+        Array.from(node.attributes).filter((attr)=>$438b9fc6d2bad1a9$var$skipAttr(controller.identifier, attr)).forEach((attr)=>{
+            const params = $438b9fc6d2bad1a9$var$getBindingParamsFromAttribute(attr);
+            $438b9fc6d2bad1a9$export$794005cd6f1aea3(controller, {
+                node: node,
+                ...params
+            });
             node.removeAttribute(attr.name);
         });
     });
@@ -504,13 +544,8 @@ function $438b9fc6d2bad1a9$export$317a120ffaa434e1(controller) {
     $438b9fc6d2bad1a9$export$b7c6f809f4c7570b(controller);
     $438b9fc6d2bad1a9$export$2696433f89f63f2f(controller);
 }
-function $438b9fc6d2bad1a9$export$794005cd6f1aea3(controller, node, name, path, negated) {
-    $438b9fc6d2bad1a9$export$afc479602647d2a4(controller).add({
-        node: node,
-        name: name,
-        path: path,
-        negated: negated
-    });
+function $438b9fc6d2bad1a9$export$794005cd6f1aea3(controller, binding) {
+    $438b9fc6d2bad1a9$export$afc479602647d2a4(controller).add(binding);
 }
 function $438b9fc6d2bad1a9$export$3eff236524896414(controller, node) {
     const bindings = $438b9fc6d2bad1a9$export$afc479602647d2a4(controller);
@@ -527,6 +562,26 @@ function $438b9fc6d2bad1a9$export$afc479602647d2a4(controller) {
 }
 function $438b9fc6d2bad1a9$var$bindingsAreInitialized(controller) {
     return controller.__value_bindings instanceof Set;
+}
+function $438b9fc6d2bad1a9$var$bindingAttrRegex(identifier = null) {
+    const prefix = identifier ? `data-${identifier}` : "data-(?:[\\w-]+)";
+    return new RegExp(`^${prefix}-${$438b9fc6d2bad1a9$var$bindingAttrMatcher}$`, "ig");
+}
+function $438b9fc6d2bad1a9$var$getBindingParamsFromAttribute(attr) {
+    const matcher = $438b9fc6d2bad1a9$var$bindingAttrRegex();
+    let [_, type, modifiers = ""] = [
+        ...attr.name.matchAll(matcher)
+    ][0];
+    type = type || "all";
+    modifiers = modifiers.split(":");
+    return {
+        type: type,
+        modifiers: modifiers,
+        lookup: attr.value
+    };
+}
+function $438b9fc6d2bad1a9$var$skipAttr(identifier, attr) {
+    return $438b9fc6d2bad1a9$var$bindingAttrRegex(identifier).test(attr.name);
 }
 
 
@@ -2933,5 +2988,6 @@ class $1e3a7605f5964432$export$2e2bcd8739ae039 extends (0, $861a37e0262dfc28$exp
 
 
 
-export {$0c4a772011edf2b8$export$d8d8c48ace6d5d1b as useValueBindings, $1e3a7605f5964432$export$2e2bcd8739ae039 as ValueBindingsController, $b3e7e8c1a3c43eb7$export$bdd553fddd433dcb as nextTick};
+
+export {$0c4a772011edf2b8$export$d8d8c48ace6d5d1b as useValueBindings, $1e3a7605f5964432$export$2e2bcd8739ae039 as ValueBindingsController, $438b9fc6d2bad1a9$export$afc479602647d2a4 as getBindingsForController, $b3e7e8c1a3c43eb7$export$bdd553fddd433dcb as nextTick};
 //# sourceMappingURL=main.js.map

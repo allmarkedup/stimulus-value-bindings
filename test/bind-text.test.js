@@ -29,8 +29,8 @@ describe("default values", () => {
   it("sets the initial text content of bound elements", async () => {
     const { elements } = await context.setup(`
       <div data-controller="subject">
-        <span data-subject-bind-text="countValue" data-test-element="count"></span>
-        <span data-subject-bind-text="unitValue" data-test-element="unit"></span>
+        <span data-subject-bind-text="count" data-test-element="count"></span>
+        <span data-subject-bind-text="unit" data-test-element="unit"></span>
       </div>
     `);
 
@@ -41,8 +41,8 @@ describe("default values", () => {
   it("respects default values set via data attributes", async () => {
     const { elements } = await context.setup(`
       <div data-controller="subject" data-subject-count-value="5" data-subject-unit-value="items">
-        <span data-subject-bind-text="countValue" data-test-element="count"></span>
-        <span data-subject-bind-text="unitValue" data-test-element="unit"></span>
+        <span data-subject-bind-text="count" data-test-element="count"></span>
+        <span data-subject-bind-text="unit" data-test-element="unit"></span>
       </div>
     `);
 
@@ -55,8 +55,8 @@ describe("value updates", () => {
   it("updates the text content when changed within a controller", async () => {
     const { elements } = await context.setup(`
       <div data-controller="subject">
-        <span data-subject-bind-text="countValue" data-test-element="count"></span>
-        <span data-subject-bind-text="unitValue" data-test-element="unit"></span>
+        <span data-subject-bind-text="count" data-test-element="count"></span>
+        <span data-subject-bind-text="unit" data-test-element="unit"></span>
         <button data-action="click->subject#increment" data-test-element="incrementer">+</button>
         <button data-action="click->subject#changeUnit" data-subject-unit-param="items" data-test-element="unitChanger">change unit</button>
       </div>
@@ -84,8 +84,8 @@ describe("value updates", () => {
   it("updates the text content when the controller value setter method is called directly", async () => {
     const { controller, elements } = await context.setup(`
       <div data-controller="subject">
-        <span data-subject-bind-text="countValue" data-test-element="count"></span>
-        <span data-subject-bind-text="unitValue" data-test-element="unit"></span>
+        <span data-subject-bind-text="count" data-test-element="count"></span>
+        <span data-subject-bind-text="unit" data-test-element="unit"></span>
       </div>
     `);
     const { count, unit } = elements;
@@ -112,8 +112,8 @@ describe("value updates", () => {
   it("updates the text content when value attributes change", async () => {
     const { controller, elements } = await context.setup(`
       <div data-controller="subject">
-        <span data-subject-bind-text="countValue" data-test-element="count"></span>
-        <span data-subject-bind-text="unitValue" data-test-element="unit"></span>
+        <span data-subject-bind-text="count" data-test-element="count"></span>
+        <span data-subject-bind-text="unit" data-test-element="unit"></span>
       </div>
     `);
     const { count, unit } = elements;

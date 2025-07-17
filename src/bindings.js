@@ -1,17 +1,26 @@
-import { getProperty } from "dot-prop";
 import { bind } from "./bind";
 import { walk } from "./utils";
+import { resolveValue } from "./value-resolver";
+
+const bindingAttrMatcher = "bind-?([\\w-]*)(?::([\\w:-]+))?";
+
+export function registerBindings(controller) {
+  if (!bindingsAreInitialized(controller)) {
+    controller.__value_bindings = new Set();
+    registerBindingsForNode(controller, controller.element);
+  }
+}
 
 export function updateBindings(controller, callback) {
   const bindings = getBindings(controller);
 
   bindings.forEach((binding) => {
-    let { node, name, path, negated } = binding;
+    const { node } = binding;
     if (!controller.element.contains(node)) {
       // clean up any bindings for elements that have been removed from the DOM
       bindings.delete(binding);
     } else {
-      updateBindingsForNode(controller, node, name, path, negated);
+      updateBindingsForNode(controller, binding);
       node.removeAttribute("data-cloak");
     }
   });
@@ -22,36 +31,19 @@ export function updateBindings(controller, callback) {
   }
 }
 
-function updateBindingsForNode(controller, node, name, path, negated) {
-  let value = getProperty(controller, path);
-  if (typeof value === "function") {
-    value = value.bind(controller)(node);
-  }
-  bind(node, name, negated ? !value : value);
-}
-
-export function registerBindings(controller) {
-  if (!bindingsAreInitialized(controller)) {
-    controller.__value_bindings = new Set();
-    registerBindingsForNode(controller, controller.element);
-  }
+function updateBindingsForNode(controller, binding) {
+  const { node, type, lookup, modifiers } = binding;
+  const value = resolveValue(controller, lookup, modifiers, [node]);
+  bind(node, type, value);
 }
 
 export function registerBindingsForNode(controller, rootNode) {
-  const attrPrefix = `data-${controller.identifier}-bind`;
-
   walk(rootNode, (node) => {
     Array.from(node.attributes)
-      .filter(({ name }) => name.startsWith(attrPrefix))
+      .filter((attr) => skipAttr(controller.identifier, attr))
       .forEach((attr) => {
-        let negated = false;
-        let path = attr.value;
-        if (path.startsWith("!")) {
-          negated = true;
-          path = path.replace("!", "");
-        }
-        const name = attr.name === attrPrefix ? "all" : attr.name.replace(`${attrPrefix}-`, "");
-        registerBinding(controller, node, name, path, negated);
+        const params = getBindingParamsFromAttribute(attr);
+        registerBinding(controller, { node, ...params });
         node.removeAttribute(attr.name);
       });
   });
@@ -62,8 +54,8 @@ export function refreshBindings(controller) {
   registerBindings(controller);
 }
 
-export function registerBinding(controller, node, name, path, negated) {
-  getBindings(controller).add({ node, name, path, negated });
+export function registerBinding(controller, binding) {
+  getBindings(controller).add(binding);
 }
 
 export function deregisterBindingsForNode(controller, node) {
@@ -87,4 +79,21 @@ export function getBindings(controller) {
 
 function bindingsAreInitialized(controller) {
   return controller.__value_bindings instanceof Set;
+}
+
+function bindingAttrRegex(identifier = null) {
+  const prefix = identifier ? `data-${identifier}` : "data-(?:[\\w-]+)";
+  return new RegExp(`^${prefix}-${bindingAttrMatcher}$`, "ig");
+}
+
+function getBindingParamsFromAttribute(attr) {
+  const matcher = bindingAttrRegex();
+  let [_, type, modifiers = ""] = [...attr.name.matchAll(matcher)][0];
+  type = type || "all";
+  modifiers = modifiers.split(":");
+  return { type, modifiers, lookup: attr.value };
+}
+
+function skipAttr(identifier, attr) {
+  return bindingAttrRegex(identifier).test(attr.name);
 }

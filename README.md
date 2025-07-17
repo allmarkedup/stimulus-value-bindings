@@ -154,15 +154,40 @@ In the example above, clicking the `read more` button will toggle the `hidden` a
 Bindings are declared on DOM elements using data attributes with the following format:
 
 ```
-data-[identifier]-bind-[bindingType]="[property]"
+data-[identifier]-bind-[type]="[property]"
 ```
 
 * `[identifier]`: The [identifier](https://stimulus.hotwired.dev/reference/controllers#identifiers) of the target controller.
-* `[bindingType]`: The type of binding required. See below for details.
-* `[property]` The bound property specifier.
+* `[type]`: The type of binding required. See below for details.
+* `[property]` The controller property to bind to.
 
-### Property specifiers
+### Specifying the property to bind to
 
+The controller property to bind to should be provided as the value of the the binding data attribute.
+
+Any (public) controller property can be bound to - however note that only changes to [Stimulus controller values](https://stimulus.hotwired.dev/reference/values) will trigger bindings to be updated.
+
+**Binding to a controller `value`:**
+
+```
+data-example-bind-text="greetingValue"
+```
+
+Or use the shorthand version (omitting the `Value` suffix):
+
+```
+data-example-bind-text="greeting"
+```
+
+_The shorthand version in this example will only work if the controller doesn't have a `greeting` property set, otherwise that property will be used instead._
+
+
+**Binding to a controller property**
+
+```
+data-example-bind-text="propertyName"
+data-example-bind-text="nested.property.name"
+```
 
 
 ### Binding attributes

@@ -28,7 +28,7 @@ describe("element attributes", () => {
   it("binds default values", async () => {
     const { elements } = await context.setup(`
       <div data-controller="subject" data-subject-src-value="https://example.com/example.gif">
-        <img data-subject-bind-src="srcValue" data-subject-bind-alt="altValue" data-test-element="image">
+        <img data-subject-bind-src="src" data-subject-bind-alt="alt" data-test-element="image">
       </div>
     `);
 
@@ -39,7 +39,7 @@ describe("element attributes", () => {
   it("keeps the attribute values in sync with the controller values", async () => {
     const { controller, elements } = await context.setup(`
       <div data-controller="subject">
-        <img data-subject-bind-src="srcValue" data-subject-bind-alt="altValue" data-test-element="image">
+        <img data-subject-bind-src="src" data-subject-bind-alt="alt" data-test-element="image">
       </div>
     `);
 
@@ -93,8 +93,8 @@ describe("boolean attributes with associated properties", () => {
   it("binds default values", async () => {
     const { elements } = await context.setup(`
       <div data-controller="subject">
-        <input data-subject-bind-disabled="disabledValue" type="text" data-test-element="input1">
-        <input data-subject-bind-checked="checkedValue" type="checkbox" data-test-element="input2">
+        <input data-subject-bind-disabled="disabled" type="text" data-test-element="input1">
+        <input data-subject-bind-checked="checked" type="checkbox" data-test-element="input2">
       </div>
     `);
 
@@ -108,7 +108,7 @@ describe("boolean attributes with associated properties", () => {
   it("adds the attribute when the value changes to true", async () => {
     const { controller, elements } = await context.setup(`
       <div data-controller="subject">
-        <input data-subject-bind-disabled="disabledValue" type="text" data-test-element="input">
+        <input data-subject-bind-disabled="disabled" type="text" data-test-element="input">
       </div>
     `);
 
@@ -126,7 +126,7 @@ describe("boolean attributes with associated properties", () => {
   it("removed the attribute when the value changes to false", async () => {
     const { controller, elements } = await context.setup(`
       <div data-controller="subject">
-        <input data-subject-bind-checked="checkedValue" type="checkbox" data-test-element="input">
+        <input data-subject-bind-checked="checked" type="checkbox" data-test-element="input">
       </div>
     `);
 
