@@ -1,3 +1,11 @@
+
+> [!CAUTION]
+> _This package has been archived and is no longer maintained._
+> 
+> Superseded by **[StimulusX - A reactivity engine for Stimulus controllers](https://github.com/allmarkedup/stimulus-x)**. Use that instead!
+
+---
+
 <center>
 
 <img src=".github/assets/svb.png" alt="stimulus-value-bindings" width="440"> 
